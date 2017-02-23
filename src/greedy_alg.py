@@ -72,3 +72,5 @@ def greed_alg(input_data):
     """
     (videos, caches, endpoints) = get_endpoints(input_data)
 
+    
+
