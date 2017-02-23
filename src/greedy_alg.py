@@ -36,7 +36,7 @@ class Cache(object):
     def add_video(self, video):
         if video.size > self.remaining_capacity():
             raise NoCapacityException()
-        
+
         if video in self.videos:
             return
 
@@ -64,6 +64,13 @@ def get_endpoints(input_data):
             .video_requests \
             .append((videos[request.video_id], request.num_requests))
 
+    for endpoint in endpoints:
+        endpoint.cache_links.sort(key=lambda cache_link: cache_link[1])
+        endpoint.video_requests.sort(
+            key=lambda video_requests: video_requests[1],
+            reverse=True
+        )
+
     return (videos, caches, endpoints)
 
 def greed_alg(input_data):
@@ -72,5 +79,5 @@ def greed_alg(input_data):
     """
     (videos, caches, endpoints) = get_endpoints(input_data)
 
-    
+
 
