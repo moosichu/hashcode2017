@@ -100,7 +100,7 @@ def getData(data_name):
         data.requests.append(r)
 
     # Uncomment to see structure
-    pp.pprint(vars(data))
+    # pp.pprint(vars(data))
     return data
 
 
