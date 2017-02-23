@@ -72,7 +72,7 @@ def getData(data_name):
     line_2 = f.readline()
     # print(line_2)
 
-    vid_sizes = map(int, line_2.split(' '))
+    data.video_data = map(int, line_2.split(' '))
 
     # Get the info for each endpoint
     for ep_index in range(0, data.num_endpoints):
@@ -97,9 +97,10 @@ def getData(data_name):
         origin_endpoint_id = request_info[1]
 
         r = Request(num_requests, video_id, origin_endpoint_id)
+        data.requests.append(r)
 
     # Uncomment to see structure
-    # pp.pprint(vars(data))
+    pp.pprint(vars(data))
     return data
 
 
