@@ -18,7 +18,7 @@ class Endpoint:
         Contains dictionary indexing cacheids to latency
         """
         self.num_links = 0
-        self.cache_links = {} # dictionary from int of cache id to cache latency
+        self.cache_links = {} # dictionary from int to int of cache id to cache latency
 
 class Request:
     def __init__(self, num_requests, video_id, endpoint):
@@ -33,8 +33,8 @@ class OutputData:
         self.cache_to_video = {} # dictionary from cache ids to CacheData
 
 class CacheData:
-    def __init__(self):
-        self.videos = [] # list of video ids used (int)
+    def __init__(self, videos = []):
+        self.videos = videos # list of video ids used (int)
 
 def getData(data_name):
     """
@@ -42,8 +42,16 @@ def getData(data_name):
     """
     pass
 
-def setData(data, implementation_name):
+def setData(data, file_identifier):
     """
     Outputs data to file, give it an OutputData class
     """
-    pass
+    path = "../submissions/" + file_identifier + ".out"
+    f = open(path, 'w')
+    f.write(str(data.num_used_servers) + "\n")
+    for cache_id, cache_data in data.cache_to_video.items():
+        line = str(cache_id)
+        for video in cache_data.videos:
+            line += " " + str(video)
+        f.write(line + "\n")
+    f.close()
