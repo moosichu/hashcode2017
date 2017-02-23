@@ -9,6 +9,7 @@ foreach(endpoint):
 
 
 """
+data = getData("kittens")
 
 testData = OutputData()
 testData.num_used_servers = 3
