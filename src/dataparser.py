@@ -18,7 +18,7 @@ class Endpoint:
         Contains dictionary indexing cacheids to latency
         """
         self.num_links = 0
-        self.cache_links = {} # dictionary from int to int of cache id to cache latency
+        self.cache_links = {} # dictionary from int of cache id to cache latency
 
 class Request:
     def __init__(self, num_requests, video_id, endpoint):
