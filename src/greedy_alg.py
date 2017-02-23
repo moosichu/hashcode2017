@@ -51,18 +51,19 @@ class Video(object):
 
 def get_endpoints(input_data):
     videos = [Video(video_size) for video_size in input_data.video_data]
-    caches = [Cache(input_data.cache_size) for _ in input_data.num_caches]
-    endpoints = [
-        GreedyEndpoint(
-            [(caches[cache_id], latency) for cache_id, latency in endpoint.cache_links]
+    caches = [Cache(input_data.cache_size) for _ in range(input_data.num_caches)]
+
+    def greedy_endpoint_from_data_endpoint(endpoint):
+        return GreedyEndpoint(
+            [(caches[int(cache_id)], latency) for cache_id, latency in endpoint.cache_links.iteritems()]
         )
-        for endpoint in range(input_data.endpoint_data)
-    ]
+
+    endpoints = [greedy_endpoint_from_data_endpoint(endpoint) for endpoint in input_data.endpoint_data]
 
     for request in input_data.requests:
-        endpoints[request.endpoint] \
+        endpoints[int(request.origin_endpoint_id)] \
             .video_requests \
-            .append((videos[request.video_id], request.num_requests))
+            .append((videos[int(request.video_id)], request.num_requests))
 
     for endpoint in endpoints:
         endpoint.cache_links.sort(key=lambda cache_link: cache_link[1])
