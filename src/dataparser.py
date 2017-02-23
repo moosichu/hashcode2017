@@ -42,7 +42,7 @@ def getData(data_name):
     """
     pass
 
-def setData(data):
+def setData(data, implementation_name):
     """
     Outputs data to file, give it an OutputData class
     """
