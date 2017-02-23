@@ -78,6 +78,15 @@ def greed_alg(input_data):
     Greedy Alg
     """
     (videos, caches, endpoints) = get_endpoints(input_data)
-
-
-
+    q_endpoints = deque(endpoints)
+    while len(q_endpoints) > 0:
+        endpoint = q_endpoints.popLeft()
+        if len(endpoint.video_requests) == 0: continue
+        video = endpoint.video_requests.pop(0)[0]
+        for cache in endpoint.cache_links:
+            if cache.remaining_capacity >= video.size:
+                cache.add_video(video)
+                q_endpoints.append(endpoint)
+                break
+    
+    return caches
