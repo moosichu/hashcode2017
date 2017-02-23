@@ -88,8 +88,9 @@ def fill_caches_from_endpoints(endpoints):
         if len(endpoint.video_requests) == 0: continue
         video = endpoint.video_requests.pop(0)[0]
         for cache_link in endpoint.cache_links:
-            while (video in cache.videos): video = endpoint.video_requests.pop(0)[0]
             cache = cache_link[0]
+            while (video in cache.videos and len(endpoint.video_requests) > 0): video = endpoint.video_requests.pop(0)[0]
+            if (len(endpoint.video_requests) == 0): break
             if cache.remaining_capacity() >= video.size:
                 cache.add_video(video)
                 q_endpoints.append(endpoint)
