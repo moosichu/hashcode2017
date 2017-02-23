@@ -1,6 +1,8 @@
 """
 Greedy algorithm is greedy
 """
+from dataparser import OutputData, CacheData
+from functools import reduce
 
 import collections
 from collections import deque
@@ -22,9 +24,10 @@ class Cache(object):
     """
     Cache
     """
-    def __init__(self, capacity):
+    def __init__(self, capacity, cache_id):
         self.capacity = capacity
         self.videos = []
+        self.cache_id = cache_id
 
     def filled_capacity(self):
         return reduce(
@@ -49,12 +52,13 @@ class Video(object):
     """
     Video
     """
-    def __init__(self, size):
+    def __init__(self, size, video_id):
         self.size = size
+        self.video_id = video_id
 
 def get_endpoints(input_data):
-    videos = [Video(video_size) for video_size in input_data.video_data]
-    caches = [Cache(input_data.cache_size) for _ in range(input_data.num_caches)]
+    videos = [Video(video_size, video_id) for video_id, video_size in enumerate(input_data.video_data)]
+    caches = [Cache(input_data.cache_size, cache_id) for cache_id in range(input_data.num_caches)]
 
     def greedy_endpoint_from_data_endpoint(endpoint):
         return GreedyEndpoint(
@@ -75,13 +79,9 @@ def get_endpoints(input_data):
             reverse=True
         )
 
-    return (videos, caches, endpoints)
+    return (caches, endpoints)
 
-def greed_alg(input_data):
-    """
-    Greedy Alg
-    """
-    (videos, caches, endpoints) = get_endpoints(input_data)
+def fill_caches_from_endpoints(endpoints):
     q_endpoints = deque(endpoints)
     while len(q_endpoints) > 0:
         endpoint = q_endpoints.popleft()
@@ -93,5 +93,26 @@ def greed_alg(input_data):
                 cache.add_video(video)
                 q_endpoints.append(endpoint)
                 break
+
+def caches_to_output_data(caches):
+    output_data = OutputData()
+
+    for cache in caches:
+        if len(cache.videos) > 0:
+            output_data.num_used_servers += 1
+            output_data.cache_to_video[str(cache.cache_id)] = CacheData(
+                [video.video_id for video in cache.videos]
+            )
+
+    return output_data
+
+
+def greed_alg(input_data):
+    """
+    Greedy Alg
+    """
+    (caches, endpoints) = get_endpoints(input_data)
+    fill_caches_from_endpoints(endpoints)
+    return caches_to_output_data(caches)
+
     
-    return caches
