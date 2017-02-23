@@ -18,7 +18,7 @@ class Endpoint:
         self.num_links = 0
         self.cache_links = {}
 
-class Reqjest:
+class Request:
     def __init__(self, num_requests, video_id, endpoint):
         self.num_requests = num_requests
         self.video_id = video_id
