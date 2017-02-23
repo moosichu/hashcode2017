@@ -6,9 +6,9 @@ class Data:
         self.num_caches = 0
         self.cache_size = 0
 
-        self.video_data = []
+        self.video_data = [] # list of video sizes
         self.endpoint_data = [] # list of Endpoints
-        self.requests = []
+        self.requests = [] # list of requests
 
 class Endpoint:
     def __init__(self):
