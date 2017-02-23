@@ -2,6 +2,9 @@
 Greedy algorithm is greedy
 """
 
+import collections
+from collections import deque
+
 class NoCapacityException(Exception):
     """
     Exception for when a cache runs out of space
@@ -55,7 +58,7 @@ def get_endpoints(input_data):
 
     def greedy_endpoint_from_data_endpoint(endpoint):
         return GreedyEndpoint(
-            [(caches[int(cache_id)], latency) for cache_id, latency in endpoint.cache_links.iteritems()]
+            [(caches[int(cache_id)], latency) for cache_id, latency in endpoint.cache_links.items()]
         )
 
     endpoints = [greedy_endpoint_from_data_endpoint(endpoint) for endpoint in input_data.endpoint_data]
@@ -81,11 +84,12 @@ def greed_alg(input_data):
     (videos, caches, endpoints) = get_endpoints(input_data)
     q_endpoints = deque(endpoints)
     while len(q_endpoints) > 0:
-        endpoint = q_endpoints.popLeft()
+        endpoint = q_endpoints.popleft()
         if len(endpoint.video_requests) == 0: continue
         video = endpoint.video_requests.pop(0)[0]
-        for cache in endpoint.cache_links:
-            if cache.remaining_capacity >= video.size:
+        for cache_link in endpoint.cache_links:
+            cache = cache_link[0]
+            if cache.remaining_capacity() >= video.size:
                 cache.add_video(video)
                 q_endpoints.append(endpoint)
                 break
