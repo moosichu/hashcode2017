@@ -1,6 +1,7 @@
 # definition of input data structures
 class InputData:
     def __init__(self):
+        self.data_name = ""
         self.num_videos = 0
         self.num_endpoints = 0
         self.num_requests = 0
@@ -34,3 +35,15 @@ class OutputData:
 class CacheData:
     def __init__(self):
         self.videos = [] # list of video ids used (int)
+
+def getData(data_name):
+    """
+    Returns data in an InputData class
+    """
+    pass
+
+def setData(data):
+    """
+    Outputs data to file, give it an OutputData class
+    """
+    pass
